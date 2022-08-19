@@ -7,4 +7,4 @@ ans <- function() {
   # enter the codes in here
   return(rnorm(n = 1, m = 10, sd = 3))
 }
-ans()
+n1 <- ans()
