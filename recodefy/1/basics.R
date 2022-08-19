@@ -5,8 +5,6 @@
 
 ans <- function() {
   # enter the codes in here
-  arr <- rnorm(10, 10, 3)
-  print(arr)
-  stopifnot(length(arr) == 10)
+  return(rnorm(n = 1, m = 10, sd = 3))
 }
 ans()
