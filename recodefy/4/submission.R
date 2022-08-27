@@ -6,8 +6,7 @@
 #make sure 2 headers (X, Y) are read in properly as the column names
 
 #Complete implementation...
-data <-
-
+data <- read.table("AutoInsurSweden.txt",skip=10, header=TRUE)
 
 
 #b)
@@ -15,23 +14,18 @@ data <-
 #from the decimal part
 #read up on gsub() and try convert the Y column of data to 
 #the proper numeric form
-class(data$Y) # character
 
-#Complete implementation...
-data$Y <-
-
-
-class(data$Y) # should be numeric
-
-#c)
-#keeping the original scale
-#X = number of claims
-#Y = total payment of all claims (thousands)
-#generate a linear regression to predict the total payment
-
-#Complete implementation...
-model <-
+print(data)
+print(class(data$Y)) # character
+data$Y <- as.numeric(gsub(",",".", data$Y))
+print(data)
+print(class(data$Y))
 
 
-#this should show the model details
-summary(model)
+model <- lm(X~Y,data)
+
+print(summary(model))
+
+
+
+

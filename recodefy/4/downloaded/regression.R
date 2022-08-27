@@ -30,7 +30,7 @@ class(data$Y) # should be numeric
 #generate a linear regression to predict the total payment
 
 #Complete implementation...
-model <-
+model <- lm(X~Y,data)
 
 
 #this should show the model details
