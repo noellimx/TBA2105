@@ -2,6 +2,9 @@
 #For this exercise, we will be doing KNN without using any additional libraries
 #we will be using the iris data set
 
+set.seed(NULL)
+
+
 #dataLabels will give us the species of each data instance reference by its index
 dataLabels <- iris$Species
 
@@ -9,7 +12,7 @@ dataLabels <- iris$Species
 #for this exercise, we will be select one of the data instance and treating it
 #as the testing point, and the remaining 149 instances as the training point
 #we can change this arbitrarily to switch to another testing point
-testingDataIndex <- 12
+testingDataIndex <-  (floor(rnorm(1) * 150)) %% 150
 
 
 print("--- testingDataIndex ")
@@ -38,8 +41,6 @@ K <- 3
 
 closestIndexes <- sort(distancesWithoutTestingData,index.return = TRUE)
 
-
-
 sss <- closestIndexes$ix
 closestIndexes <- sss
 
@@ -67,12 +68,17 @@ for (i in 1:K){
 maxCount <- max(setosaCount, versicolorCount, virginicaCount)
 if (maxCount == setosaCount){
   print("max is setosa")
+  actualLabel = "setosa"
 } else if (maxCount == versicolorCount){
   print("max is versicolor")
+  actualLabel = "versicolor"
 } else{
   print("max is virginica")
+  actualLabel = "virginica"
 }
 
+
+print(testingLabel == actualLabel)
 print("testing label is")
 print(testingLabel)
 
