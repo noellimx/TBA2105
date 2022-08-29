@@ -8,8 +8,8 @@ gplay_without_any_na <- na.omit(gplay)
 
 # c
 installs__ <- gsub(",", "", gplay_without_any_na$Installs)
-clean_Installs <- as.numeric(gsub("\\+", "", installs__))
-gplay_without_any_na$Installs <- clean_Installs
+gplay_col_clean_install <- as.numeric(gsub("\\+", "", installs__))
+gplay_without_any_na$Installs <- gplay_col_clean_install
 
 gplay_without_any_na$log10Reviews <- log10(gplay_without_any_na$Reviews)
 clean_gplay <- gplay_without_any_na
@@ -49,3 +49,18 @@ gplay_summary_by_category <- summarise(group_by(clean_gplay,Category),
   meanReviews = mean(Reviews),
   meanRating = mean(Rating)
 )
+
+#j
+plot_gplay_summary_by_category <- ggplot(data=filter(gplay_summary_by_category),aes(x=Category,y=meanRating,fill=Category,color=Category)) + geom_bar(stat="identity") + labs(x="Category",y="meanRating") + coord_flip()
+
+ 
+print(plot_gplay_summary_by_category)
+
+#k
+linear_x_Reviews_Installs_y_Rating <-lm(Rating ~ Reviews+Installs,gplay_without_any_na)
+print(linear_x_Reviews_Installs_y_Rating)
+
+#l
+plot_stacked_histogram_of_cat_by_rating <- ggplot(data=gplay_without_any_na,aes(x=Rating,fill=Type,color=Type)) + geom_histogram(binwidth=0.1,alpha=0.8)
+print(plot_stacked_histogram_of_cat_by_rating)
+
