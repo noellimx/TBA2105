@@ -135,7 +135,7 @@ question_j()
 linear_x_Reviews_Installs_y_Rating <- lm(Rating ~ Reviews + Installs, gplay)
 
 model1 <- linear_x_Reviews_Installs_y_Rating
-summary(model1)
+print(summary(model1))
 
 
 # l)
