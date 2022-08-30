@@ -5,9 +5,8 @@
 
 ans <- function() {
   # enter the codes in here
-  
-  n1 <- rnorm(n=1,m=10,sd=3)
-  
+
+  n1 <- rnorm(n = 1, m = 10, sd = 3)
 }
 
 ans()
