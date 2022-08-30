@@ -14,8 +14,7 @@ library(ggplot2)
 # that contain NA values
 
 # Complete implementation...
-gplay <- read.csv("googleplaystore.csv", na.strings = c("NaN"))
-
+gplay <- read.csv("googleplaystore.csv", na.strings = c(""))
 gplay <- na.omit(gplay)
 
 # c)
@@ -26,6 +25,8 @@ gplay <- na.omit(gplay)
 # Complete implementation...
 gplay$Installs <- as.numeric(gsub("\\+", "", gsub(",", "", gplay$Installs)))
 
+gplay$log10Reviews <- log10(gplay$Reviews)
+
 # d)
 # Read up on the ggplot2 cheatsheet
 # https://raw.githubusercontent.com/rstudio/cheatsheets/master/data-visualization-2.1.pdf
@@ -33,12 +34,10 @@ gplay$Installs <- as.numeric(gsub("\\+", "", gsub(",", "", gplay$Installs)))
 
 question_d <- function() {
   # Complete implementation...
-  plot_gplay_y_Reviews_x_Rating <- ggplot(data = gplay, aes(y = Reviews, x = Rating)) +
+plot_gplay_y_Reviews_x_Rating <- ggplot(data = gplay, aes(y = Reviews, x = Rating)) +
     geom_point()
-  print(plot_gplay_y_Reviews_x_Rating)
 }
 question_d()
-
 
 # e)
 # Enhance the plot from d) by performing a log transformation to the Reviews
@@ -49,25 +48,24 @@ question_e <- function() {
   # Complete implementation...
   plot_gplay_y_logReviews_x_Rating <- ggplot(data = gplay, aes(y = log10(gplay$Reviews), x = Rating)) +
     geom_point()
-  print(plot_gplay_y_logReviews_x_Rating)
 }
 question_e()
-
 # f)
 # Add another dimension of information to the plot from e) by coloring the
 # scatterplot by Category
 
-
 question_f <- function() {
   # Complete implementation...
-  plot_gplay_y_logReviews_x_Rating_fill_Category <- ggplot(data = gplay, aes(y = log10(gplay$Reviews), x = Rating, color = Category)) +
+  plot_gplay_y_logReviews_x_Rating_fill_Category <- ggplot(data = gplay, aes(y = log10Reviews, x = Rating, color = factor(Category))) +
     geom_point()
-  print(plot_gplay_y_logReviews_x_Rating_fill_Category)
 }
 question_f()
-
 # g)
 # this question will not be evaluated by autograder
+question_g <- function() {
+  plot_gplay_y_logReviews_x_Rating_fill_Type <- ggplot(data = gplay, aes(y = log10Reviews, x = Rating, color = factor(Type))) +
+    geom_point()
+}
 
 
 # h)
@@ -83,7 +81,6 @@ question_h <- function() {
 }
 View(question_h())
 
-
 # i)
 # Use the group_by() and summarize() functions to obtain the mean rating (meanRating) and
 # mean number of reviews (meanReviews)
@@ -91,17 +88,16 @@ View(question_h())
 
 question_i <- function() {
   # Complete implementation...
-  gplay_summary_by_category <- summarise(group_by(gplay, Category),
-    meanRating = mean(Rating),
-    meanReviews = mean(Reviews)
-  )
 
+  gplay_summary_by_category <- summarise(group_by(gplay, Category),
+    meanReviews = mean(Reviews),
+    meanRating = mean(Rating)
+  )
 
   gplay_summary <- gplay_summary_by_category
   return(gplay_summary)
 }
 View(question_i())
-
 
 
 # j)
@@ -112,19 +108,12 @@ View(question_i())
 
 question_j <- function() {
   # Complete implementation...
-  gplay_summary_by_category <- summarise(group_by(gplay, Category),
-    meanRating = mean(Rating),
-    meanReviews = mean(Reviews)
-  )
-  plot_gplay_summary_by_category <- ggplot(data = gplay_summary_by_category, aes(x = Category, y = meanRating, color = meanRating, fill = meanRating)) +
-    geom_col() +
+  plot_gplay_summary_by_category <- ggplot(data = filter(gplay_summary_by_category), aes(x = Category, y = meanRating, fill = Category, color = Category)) +
+    geom_bar(stat = "identity") +
     labs(x = "Category", y = "meanRating") +
-    theme(axis.text.x = element_text(angle = 90))
-  print(plot_gplay_summary_by_category)
+    coord_flip()
 }
 question_j()
-
-#-----------------
 
 # k)
 # Generate a regression model (model1) using Rating as the response and the
@@ -145,7 +134,5 @@ question_l <- function() {
   # Complete implementation...
   plot_stacked_histogram_of_cat_by_rating <- ggplot(data = gplay, aes(x = Rating, fill = Type, color = Type)) +
     geom_histogram(binwidth = 0.1, alpha = 0.8)
-
-  print(plot_stacked_histogram_of_cat_by_rating)
 }
 question_l()
