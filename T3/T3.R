@@ -72,22 +72,24 @@ stopifnot(actual_length == q_c)
 # Using the slot names we can also access other useful information
 # get the S4 slotnames of the transactions object and try getting a vector of
 # the unique items
-question_d <- function() {
-  print("---question_d---")
-  # Complete implementation...
-  items <- slot(results, "itemSummary")
 
-  return(items) # should be a vector
+question_d <- function () {
+  
+  bakery_map <- as(transactions,"matrix")
+  items <- colnames(bakery_map)
+  
+  return(items)
 }
 
 q_d <- question_d()
 
-print(qd)
+
+print(q_d)
 
 itemSummary <- slot(results, "itemSummary")
 itemInfo <- slot(results, "itemInfo")
 
-print("end")
+
 
 # e)
 # Use the read.transactions() function to read in the transactions from
@@ -95,20 +97,27 @@ print("end")
 # Complete implementation...
 bakeryTransactions <- read.transactions("bakery_1000_single.csv", format = "single", header = TRUE, sep = ",", cols = c(1, 2))
 
+library(foreign)
+
+weather <- read.arff("weather.nominal.arff")
+weather_tx <- as(weather,"transactions")
 bakerydf <- as(bakeryTransactions, "data.frame")
+print("----bakerydf----")
 
-rules <- apriori(data = bakerydf, parameter = list(support = 0.001, confidence = 0.8, maxlen = 10, target = "rules"))
+print(nrow(bakerydf))
 
-rulesFilteredByLift <- subset(rules, lift > 5)
+rules <- apriori(data = bakerydf, parameter = list(supp = 0.001, conf = 0.8, maxlen = 10, target = "rules"))
 
+rules_df <- as(rules,"data.frame")
+
+View(rules_df)
+
+rulesFilteredByLift <- subset(rules, subset = lift > 5)
+View(as(rulesFilteredByLift,"data.frame"))
 rulesFilteredByLift # should have 32 rules
-
-print("---filtered")
-inspect(rulesFilteredByLift[1:10])
-print(rulesFilteredByLift)
 
 sortedRulesBySupport <- sort(x = rulesFilteredByLift, by = "support", decreasing = TRUE)
 
 inspect(sortedRulesBySupport[1:3])
 
-sortedFrequentItemsets <- NULL
+sortedFrequentItemsets <- apriori(data = bakerydf, parameter = list(supp = 0.001, conf = 0.8, maxlen = 10, target = "frequent itemsets"))
