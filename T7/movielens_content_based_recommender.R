@@ -88,6 +88,8 @@ question_g <- function(preferences) {
 
 
   correlation_values <- cor_mat[, 1]
+  View(cor_mat[,1])
+  View(correlation_values)
 
   # ignore the first entry since it is the correlation with the preference
   correlation_values <- correlation_values[2:length(correlation_values)]
@@ -95,7 +97,7 @@ question_g <- function(preferences) {
   print("2:")
 
   # we probably should also ignore the movies in the preferences
-  correlation_values <- correlation_values[!names(correlation_values) %in% preference_vectors]
+  correlation_values <- correlation_values[!names(correlation_values) %in% preferences]
 
 
   # using correlation_values obtain top10MostSimilar
@@ -111,5 +113,9 @@ question_g <- function(preferences) {
 
 preferences <- c("Star Wars (1977)", "Stargate (1994)", "Men in Black (1997)")
 l <- question_g(preferences)
-foo_result <- foo(preferences)
-View(foo_result)
+
+
+View(l)
+
+print(l)
+
